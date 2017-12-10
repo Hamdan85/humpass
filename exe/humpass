@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+
+require "optionparser"
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: humpass [options]"
+
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+
+  opts.on("-d","--database [DATABASE]", "Initiate a new password DB on specified directory") do |path|
+    options[:database_path] = path
+  end
+
+  opts.on("-g","--generatepass [PLACE]", "Generates a password for a place") do |place|
+    options[:place] = place
+  end
+
+  opts.on("-u","--update [PLACE] [PASSWORD]", "Updates a password for a place") do |place|
+    options[:place] = place
+    options[:password] = ARGV[0]
+  end
+end.parse!
+
+options[:masterpass] = `read -s -p "Password: " password; echo $password`.chomp
+
+abort 'No Password Provided' unless options[:masterpass]
+
+options[:database_path] ||= __dir__ + '/humpass.dat'
+
+p options
+p ARGV
+
+require 'humpass'
+
+Humpass.configure do |config|
+  config.master_password  = options[:masterpass]
+  config.database_path    = options[:database_path]
+end
