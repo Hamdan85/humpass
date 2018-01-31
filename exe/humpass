@@ -4,6 +4,7 @@
 require "optionparser"
 
 options = {}
+
 OptionParser.new do |opts|
   opts.banner = "Usage: humpass [options]"
 
@@ -16,28 +17,70 @@ OptionParser.new do |opts|
     options[:database_path] = path
   end
 
-  opts.on("-g","--generatepass [PLACE]", "Generates a password for a place") do |place|
+  opts.on("-c","--createpass [PLACE]", "Generates a random password for a place") do |place|
     options[:place] = place
   end
 
-  opts.on("-u","--update [PLACE] [PASSWORD]", "Updates a password for a place") do |place|
-    options[:place] = place
-    options[:password] = ARGV[0]
+  opts.on("-s","--setpass [PLACE,PASSWORD]", Array, "Set a specific password for a place") do |place, pass|
+    options[:set_place] = place
+    options[:set_pass] = pass
+  end
+
+  opts.on("-g","--getepass [PLACE]", "Gets password from place") do |place|
+    options[:get_pass] = place
+  end
+
+  opts.on("-d","--deletepass [PLACE]", "Deletes password from place") do |place|
+    options[:delete_pass] = place
+  end
+
+  opts.on("-l","--list", "List Places") do |list|
+    options[:list] = list
   end
 end.parse!
 
 options[:masterpass] = `read -s -p "Password: " password; echo $password`.chomp
-
-abort 'No Password Provided' unless options[:masterpass]
+print "\n"
+abort 'No Password Provided' if options[:masterpass] == ""
 
 options[:database_path] ||= __dir__ + '/humpass.dat'
-
-p options
-p ARGV
 
 require 'humpass'
 
 Humpass.configure do |config|
   config.master_password  = options[:masterpass]
   config.database_path    = options[:database_path]
+end
+
+Humpass.set_data_structure
+
+if options.has_key?(:place)
+  print "#{options[:place]}: #{Humpass.generate_password(options[:place])}\n"
+end
+
+if options.has_key?(:set_place)
+  Clipboard.copy(Humpass.set_password(options[:set_place], options[:set_pass]))
+  print "Password for #{options[:set_place]} is in clipboard.\n"
+end
+
+if options.has_key?(:get_pass)
+  password = Humpass.get_password(options[:get_pass])
+  if password.class.eql?(NilClass)
+    print "\nPassword not found."
+  else
+    Clipboard.copy(password)
+    print "Password for #{options[:get_pass]} copied to clipboard.\n"
+  end
+end
+
+if options.has_key?(:delete_pass)
+  print "#{options[:delete_pass]}: #{Humpass.remove_password(options[:delete_pass])}\n"
+end
+
+if options.has_key?(:list)
+  print"PLACES START:\n"
+  Humpass.list_passwords.each do |password|
+    print"#{password.first}\n"
+  end
+  print"PLACES END:\n"
 end

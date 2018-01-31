@@ -5,7 +5,8 @@ module Humpass
 
   def self.initial_setup(master_password = nil)
     set_database(configuration.database_path)
-    # set_data_structure
+    set_data_structure
+    self
   end
 
   def self.configure

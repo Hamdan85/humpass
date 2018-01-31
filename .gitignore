@@ -9,3 +9,8 @@
 
 # rspec failure tracking
 .rspec_status
+/lib/humpass/humpass.dat
+/.idea/workspace.xml
+/.idea/humpass.iml
+/humpass.dat
+/.idea/.rakeTasks

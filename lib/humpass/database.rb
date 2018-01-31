@@ -14,6 +14,7 @@ module Humpass
   class Database
     attr_accessor :file_path
     def initialize(file_path = __dir__ + '/humpass.dat')
+      raise 'Configuration not sat!' if Humpass.configuration.nil?
       @file_path = file_path
     end
 
@@ -24,7 +25,11 @@ module Humpass
     end
 
     def read
-      Base64.decode64(decrypt(database_password, File.open(file_path, 'r').read))
+      begin
+        Base64.decode64(decrypt(database_password, File.open(file_path, 'r').read))
+      rescue
+        ''
+      end
     end
 
     def database_password

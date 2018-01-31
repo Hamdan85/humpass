@@ -11,7 +11,7 @@ module Humpass
   class LockWord
     attr_reader :words
     def initialize
-      @words = File.readlines('assets/words.txt')
+      @words = File.readlines(File.join(File.dirname(File.expand_path(__FILE__)), 'words.txt'))
                  .sample(15)
                  .map { |w| w.strip }
     end

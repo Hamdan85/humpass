@@ -1,8 +1,14 @@
 # Humpass
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/humpass`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ruby Application for Creating random passwords and storing them secured.
 
-TODO: Delete this and the text above, and describe your gem
+You should have a password for each service that you use, but keep these passwords in order is essencially hard because, of course, they are different form each other.
+
+SO... You don't need to know them at all.
+
+That's what this app does. It generate passwords for each service and them, it manages it for you securely.
+
+How about that?
 
 ## Installation
 
@@ -22,17 +28,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Type:
+
+    $ humpass --help
+    
+To get instructions 
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Feel free to help me out!
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/humpass. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hamdan85/humpass. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +48,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Humpass project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/humpass/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Humpass project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/hamdan85/humpass/blob/master/CODE_OF_CONDUCT.md).

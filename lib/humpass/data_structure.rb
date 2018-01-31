@@ -12,12 +12,9 @@ module Humpass
     attr_accessor :structure
 
     def initialize
-      if database.read.empty?
-        new_database_initialize
-        get_structure_from_database
-      else
-        get_structure_from_database
-      end
+      raise 'Configuration not sat!' if Humpass.configuration.nil?
+      new_database_initialize if database.read.empty?
+      get_structure_from_database
       Humpass.set_lock_words(self.lock_words)
     end
 
@@ -28,18 +25,10 @@ module Humpass
 
     def init_structure
       {
-        master_password: nil,
-        lock_words: nil,
-        passwords: nil
-      }.to_json
-    end
-
-    def current_structure
-      {
-        master_password: master_password,
-        lock_words: lock_words,
-        passwords: passwords
-      }.to_json
+        master_password: Digest::SHA2.new(256).hexdigest(Humpass.configuration.master_password),
+        lock_words: Humpass::LockWord.new.words,
+        passwords: []
+      }
     end
 
     def master_password=(master_password)
@@ -88,8 +77,12 @@ module Humpass
       if place
         place.last.decrypt(self.master_password)
       else
-        "Place Not Found!"
+        "Password Not Found!"
       end
+    end
+
+    def list_passwords
+      passwords.map{|password| [password.first, password.last.decrypt(self.master_password)]}
     end
 
     def get_structure_from_database
@@ -103,7 +96,7 @@ module Humpass
     end
 
     def update_database
-      database.write(current_structure)
+      database.write(@structure.to_json)
     end
 
     def database
